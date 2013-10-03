@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Всплывающий календарь</title>
+    <meta http-equiv="Content-Language" content="ru">
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+	<style>
+	  html{font-family:sans-serif;color:#555555;}
+	  button{font-size:200%;padding:10 20px;}
+	  
+	  div.calender table{border:4px solid #777777;border-radius:4px;width:300px;margin:20px 0 20px 0;}
+	  div.calender table td{border-bottom:1px solid #cccccc;text-align:center;}
+	  div.calender table td.weekend{color:#aa0000;}
+	  #year a, #month a{font-size:70%;color:#aaa;text-decoration:none;cursor:pointer;display:inline;}
+	  div.calender table th{background:#777777;color:#ffffff;}
+	  div.calender table th.weekend{background:#aa0000;}
+	  div.calender table td a{cursor:pointer;display:block;width:28px;padding:0 4px 0 0;text-align:right;}
+	  div.calender table td a:hover{text-decoration:underline;}
+
+	</style>
+
+  </head>
+  <body onload="display_full_date();draw_new_table();">
+	<h1>Всплывающий календарь</h1>
+	
+	<button>Новая дата</button>
+	
+	<div class="calender">
+	  <table cellspacing=0>
+	    <tr>
+	      <td id="year" colspan="7"><a>2012 ←</a> 2013 <a>→ 2013</a></td>
+	    </tr>
+	    <tr>
+	      <td id="month" colspan="7"><a>сентябрь ←</a> октябрь <a>→ ноябрь</a></td>
+	    </tr>
+	    <tr>
+	      <th>Пн</th>
+	      <th>Вт</th>
+	      <th>Ср</th>
+	      <th>Чт</th>
+	      <th>Пт</th>
+	      <th class="weekend">Сб</th>
+	      <th class="weekend">Вс</th>
+	    </tr>
+	    <tr>
+	      <td></td>
+	      <td><a id="date1" onclick="change_day(1)">1</a></td>
+	      <td><a id="date2" onclick="change_day(2)">2</a></td>
+	      <td><a id="date3" onclick="change_day(3)">3</a></td>
+	      <td><a id="date4" onclick="change_day(4)">4</a></td>
+	      <td class="weekend"><a id="date5" onclick="change_day(5)">5</a></td>
+	      <td class="weekend"><a id="date6" onclick="change_day(6)">6</a></td>
+	    </tr>
+	    <tr>
+	      <td><a id="date7" onclick="change_day(7)">7</a></td>
+	      <td><a id="date8" onclick="change_day(8)">8</a></td>
+	      <td><a id="date9" onclick="change_day(9)">9</a></td>
+	      <td><a id="date10" onclick="change_day(10)">10</a></td>
+	      <td><a id="date11" onclick="change_day(11)">11</a></td>
+	      <td class="weekend"><a id="date12" onclick="change_day(12)">12</a></td>
+	      <td class="weekend"><a id="date13" onclick="change_day(13)">13</a></td>
+	    </tr>
+	    <tr>
+	      <td><a id="date14" onclick="change_day(14)">14</a></td>
+	      <td><a id="date15" onclick="change_day(15)">15</a></td>
+	      <td><a id="date16" onclick="change_day(16)">16</a></td>
+	      <td><a id="date17" onclick="change_day(17)">17</a></td>
+	      <td><a id="date18" onclick="change_day(18)">18</a></td>
+	      <td class="weekend"><a id="date19" onclick="change_day(19)">19</a></td>
+	      <td class="weekend"><a id="date20" onclick="change_day(20)">20</a></td>
+	    </tr>
+	    <tr>
+	      <td><a id="date21" onclick="change_day(21)">21</a></td>
+	      <td><a id="date22" onclick="change_day(22)">22</a></td>
+	      <td><a id="date23" onclick="change_day(23)">23</a></td>
+	      <td><a id="date24" onclick="change_day(24)">24</a></td>
+	      <td><a id="date25" onclick="change_day(25)">25</a></td>
+	      <td class="weekend"><a id="date26" onclick="change_day(26)">26</a></td>
+	      <td class="weekend"><a id="date27" onclick="change_day(27)">27</a></td>
+	    </tr>
+	    <tr>
+	      <td><a id="date28" onclick="change_day(28)">28</a></td>
+	      <td><a id="date29" onclick="change_day(29)">29</a></td>
+	      <td><a id="date30" onclick="change_day(30)">30</a></td>
+	      <td><a id="date31" onclick="change_day(31)">31</a></td>
+	      <td></td>
+	      <td class="weekend"></td>
+	      <td class="weekend"></td>
+	    </tr>
+	  </table>
+	</div>
+
+    <div id="new-table"></div>
+
+	<input id="result" autofocus>
+
+
+	<script type="text/javascript">
+      
+     /**
+      * Основные данные, с которыми работает календарь.
+      * При запуске получает текущую дату, прикаждом дейтвии пользователя сюда записывается новая дата.
+      *
+      * new_date.day - число
+      * new_date.month - месяц
+      * new_date.year - год
+      *
+      * Да, я капитан Очевидность. Но пусть хоть какой-нибудь программист потом скажет, что чего-то не понимает в моем коде.
+      */
+      var new_date = {
+        date : new Date(),
+        day : new Date().getDate(),
+        month : new Date().getMonth(),
+        year : new Date().getFullYear()
+      }
+      
+     /**
+      * Получает новое число даты, запускает функцию отображения смены даты.
+      *
+      * @example
+      * change_day(3);
+      *
+      * @param {Number} number число даты, от 1 до 31 (например: 3).
+      * Не возвращает значений.
+      */
+      var change_day = function(number) {
+        var old_day = new_date.day;
+        new_date.day = number;
+        change_day_in_calendar(old_day, new_date.day)
+      }
+      
+     /**
+      * Получает старое число и новое число из даты и сменяет отображение в календаре
+      *
+      * @example
+      * change_day_in_calendar(13, 3);
+      *
+      * @param {Number} old_day число даты, от 1 до 31 (например: 3).
+      * @param {Number} new_day число даты, от 1 до 31 (например: 13).
+      * Не возвращает значений.
+      */
+      var change_day_in_calendar = function(old_day, new_day) {
+        display_full_date();
+        var id_old = "date" + old_day;
+        document.getElementById(id_old).style.background = 'transparent';
+        var id_new = "date" + new_day;
+        document.getElementById(id_new).style.background = '#ccc';
+      }
+
+     /**
+      * Выводит на экран дату.
+      * Не получает и не возвращает значений. Дату берет из new_date.
+      */
+      var display_full_date = function(){
+        var month = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+        var month_case = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+        document.getElementById('result').value = new_date.day + " " + month_case[(new_date.month)] + " " + new_date.year;
+
+        console.log(new_date.day + "." + new_date.month + "." + new_date.year);
+      }
+      
+     /**
+      * Перерисовывает целиком табличку с календарем
+      *
+      * @example
+      * get_week_day(9, 2013); // return 4
+      *
+      * @param {Number} month номер месяца, от 0 до 11 (например: 9).
+      * @param {Number} year год (например: 2013).
+      * Не возвращает значений. Дату берет из new_date.
+      */
+      var draw_new_table = function(month, year) {
+        var table = document.getElementById('new-table');
+
+        table.innerHTML = "<table cellspacing=0><tr><td>День недели: " + get_week_day() + "</td></tr></table>";
+      }
+      
+     /**
+      * Возвращает день недели первого числа определенного числа месяца и года.
+      *
+      * @example
+      * get_week_day(9, 2013); // return 4
+      *
+      * @param {Number} month номер месяца, от 0 до 11 (например: 9).
+      * @param {Number} year год (например: 2013).
+      * @returns {Number} день недели числом (например, 4)
+      */
+      var get_week_day = function(month, year) {
+        var date = new Date(year, month, 1);
+        return date.getDay();
+      }
+      
+//       
+      
+	</script>
+
+  </body>
+</html>
