@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Всплывающий календарь</title>
+    <meta http-equiv="Content-Language" content="ru">
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+	<style>
+	  html{font-family:sans-serif;color:#555555;}
+	  button{font-size:200%;padding:10 20px;}
+	  
+	  div.calender table{border:4px solid #777777;border-radius:4px;width:300px;margin:20px 0 20px 0;}
+	  div.calender table td{border-bottom:1px solid #cccccc;text-align:center;}
+	  #year a, #month a{font-size:70%;color:#aaa;text-decoration:none;cursor:pointer;}
+	  th.weekend{color:#ff0000;}
+
+	</style>
+
+  </head>
+  <body>
+	<h1>Всплывающий календарь</h1>
+	
+	<button>Новая дата</button>
+	
+	<div class="calender">
+	  <table cellspacing=0>
+	    <tr>
+	      <td id="year" colspan="7"><a>2012 ←</a> 2013 <a>→ 2013</a></td>
+	    </tr>
+	    <tr>
+	      <td id="month" colspan="7"><a>сентябрь ←</a> октябрь <a>→ ноябрь</a></td>
+	    </tr>
+	    <tr>
+	      <th>Пн</th>
+	      <th>Вт</th>
+	      <th>Ср</th>
+	      <th>Чт</th>
+	      <th>Пт</th>
+	      <th class="weekend">Сб</th>
+	      <th class="weekend">Вс</th>
+	    </tr>
+	    <tr>
+	      <td></td>
+	      <td><a>1</a></td>
+	      <td><a>2</a></td>
+	      <td><a>3</a></td>
+	      <td><a>4</a></td>
+	      <td class="weekend"><a>5</a></td>
+	      <td class="weekend"><a>6</a></td>
+	    </tr>
+	    <tr>
+	      <td>7</td>
+	      <td>8</td>
+	      <td>9</td>
+	      <td>10</td>
+	      <td>11</td>
+	      <td class="weekend">12</td>
+	      <td class="weekend">13</td>
+	    </tr>
+	    <tr>
+	      <td>14</td>
+	      <td>15</td>
+	      <td>16</td>
+	      <td>17</td>
+	      <td>18</td>
+	      <td class="weekend">19</td>
+	      <td class="weekend">20</td>
+	    </tr>
+	    <tr>
+	      <td>21</td>
+	      <td>22</td>
+	      <td>23</td>
+	      <td>24</td>
+	      <td>25</td>
+	      <td class="weekend">26</td>
+	      <td class="weekend">27</td>
+	    </tr>
+	    <tr>
+	      <td>28</td>
+	      <td>29</td>
+	      <td>30</td>
+	      <td>31</td>
+	      <td></td>
+	      <td class="weekend"></td>
+	      <td class="weekend"></td>
+	    </tr>
+	  </table>
+	</div>
+
+	<input id="result" autofocus value="03 октября 2013 года">
+
+
+	<script type="text/javascript">
+
+
+
+	</script>
+
+  </body>
+</html>
