@@ -15,3 +15,6 @@ ul.week-days li.weekend{color:#ff5555;}
 #days li.weekend{color:#ff5555;}
 #days li a{display:block;width:38px;padding:0 4px 0 0;cursor:pointer;}
 #days li a:hover{text-decoration:underline;}
+
+#close{text-align:center;font-size:70%;cursor:pointer;color:#aaa;}
+#close:hover{color:#ff0000;}
