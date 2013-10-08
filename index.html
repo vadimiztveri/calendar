@@ -9,7 +9,7 @@
   <body>
 	<h1>Всплывающий календарь</h1>
 	
-	Дата: <input id="result" onfocus="start_new_calendar()">
+	Дата: <input id="result" onfocus="start_new_calendar('31-12-2013')">
 	
 	<div id="calender">
 	  <div id="year"></div>
@@ -25,6 +25,7 @@
 	  </ul>
 	  <ul id="days">
 	  </ul>
+	  <div id="close"><a onclick="close_calender()">Закрыть</a></div>
 	</div>
 
     <script src="display.js"></script>
