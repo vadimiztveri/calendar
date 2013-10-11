@@ -20,23 +20,11 @@ var new_date = {
 var start_new_calendar = function(date){
   make_calendar_visible();
   if (date) {
-    new_date.day = date.substring(0, 2);
-    new_date.month = date.substring(3, 5) - 1;
-    new_date.year = date.substring(6);
+    new_date.day = parseInt(date.substring(0, 2));
+    new_date.month = parseInt(date.substring(3, 5) - 1);
+    new_date.year = parseInt(date.substring(6));
   }
   drow_entire_calendar();
-}
-
-/**
- * Вызывает все 5 функций, которые добавляют в календарь новые данные
- * Не получает и возвращает данные.
- */
-var drow_entire_calendar = function(){
-  draw_new_year();
-  draw_new_month();
-  draw_new_days();
-  change_day_in_calendar(new_date.day);
-  display_full_date_in_area();
 }
 
 /**

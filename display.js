@@ -13,7 +13,19 @@ var make_calendar_visible = function(){
 var close_calender = function(){
   document.getElementById("calender").style.display = "none";
 }
-  
+
+/**
+ * Вызывает все 5 функций, которые добавляют в календарь новые данные
+ * Не получает и возвращает данные.
+ */
+var drow_entire_calendar = function(){
+  display_full_date_in_area();
+  draw_new_year();
+  draw_new_month();
+  draw_new_days();
+  change_day_in_calendar(new_date.day);
+}
+
 /**
  * Выводит дату текстом в поле ввода.
  * Не получает и не возвращает значений. Дату берет из конфигурационных значений.
