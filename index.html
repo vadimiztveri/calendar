@@ -1,34 +1,34 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Всплывающий календарь</title>
-    <meta http-equiv="Content-Language" content="ru">
-    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-    <link type="text/css" href="style.css" rel="stylesheet" />
-  </head>
-  <body>
-	<h1>Всплывающий календарь</h1>
-	
-	Дата: <input id="result" onfocus="start_new_calendar()">
-	
-	<div id="calender">
-	  <div id="year"></div>
-      <div id="month"></div>
-	  <ul class="week-days">
-	      <li>Пн</li>
-	      <li>Вт</li>
-	      <li>Ср</li>
-	      <li>Чт</li>
-	      <li>Пт</li>
-	      <li class="weekend">Сб</li>
-	      <li class="weekend">Вс</li>
-	  </ul>
-	  <ul id="days">
-	  </ul>
-	  <div id="close"><a onclick="close_calender()">Закрыть</a></div>
-	</div>
+	<head>
+		<title>Всплывающий календарь</title>
+		<meta http-equiv="Content-Language" content="ru">
+		<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+		<link type="text/css" href="style.css" rel="stylesheet" />
+	</head>
+	<body>
+		<h1>Всплывающий календарь</h1>
 
-    <script src="display.js"></script>
-    <script src="functional.js"></script>
-  </body>
+		Дата: <input id="result" onfocus="start_new_calendar()">
+	
+		<div id="calender">
+			<div id="year"></div>
+			<div id="month"></div>
+			<ul class="week-days">
+				<li>Пн</li>
+				<li>Вт</li>
+				<li>Ср</li>
+				<li>Чт</li>
+				<li>Пт</li>
+				<li class="weekend">Сб</li>
+				<li class="weekend">Вс</li>
+			</ul>
+			<ul id="days">
+			</ul>
+			<div id="close"><a onclick="close_calender()">Закрыть</a></div>
+		</div>
+
+		<script src="display.js"></script>
+		<script src="functional.js"></script>
+	</body>
 </html>

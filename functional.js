@@ -1,15 +1,45 @@
 /**
- * Основные данные, с которыми работает календарь.
- * При запуске получает текущую дату, прикаждом действии пользователя сюда записываются новые данные.
+ * @example
+ * new_date = new  CalendarDate(11, 10, 2013);
+ *
+ * @param {Number} day день (например: 11)
+ * @param {Number} month месяц (например: 10)
+ * @param {Number} year год (например: 2013)
+ * @constructor
  */
-var new_date = {
-  day : new Date().getDate(),
-  month : new Date().getMonth(),
-  year : new Date().getFullYear()
+function CalendarDate(day, month, year) {
+  this.day = day;
+  this.month = month;
+  this.year = year;
 }
 
 /**
- * Создает новый календать по дате. Если дата не передана, то остается сегодняшняя дата.
+ * Запускает отображение календаря
+ *
+ * @this {CalendarDate}
+ * Не возвращает данные.
+*/
+CalendarDate.prototype.display = function () {
+  display_full_date_in_area(this.day, this.month, this.year);
+  draw_new_year(this.year);
+  draw_new_month(this.month);
+  draw_new_days(this.year, this.month);
+  change_day_in_calendar(this.day);
+};
+
+/**
+ * Запускает отображение календаря
+ *
+ * @this {CalendarDate}
+ * Не возвращает данные.
+*/
+CalendarDate.prototype.chance_year = function (count) {
+  this.year += count;
+  this.display();
+};
+
+/**
+ * Создает новый календать по дате. Если дата не передана, то добавялет сегодняшний день
  *
  * @example
  * start_new_calendar("31-12-2013");
@@ -17,14 +47,19 @@ var new_date = {
  * @param {String} date дата в формате dd-mm-YYYY (например: "31-12-2013").
  * Не возвращает данные.
  */
-var start_new_calendar = function(date){
-  make_calendar_visible();
-  if (date) {
-    new_date.day = parseInt(date.substring(0, 2));
-    new_date.month = parseInt(date.substring(3, 5) - 1);
-    new_date.year = parseInt(date.substring(6));
-  }
-  drow_entire_calendar();
+var start_new_calendar = function(date) {
+   make_calendar_visible();
+   if (date) {
+      var day = parseInt(date.substring(0, 2));
+      var month = parseInt(date.substring(3, 5) - 1);
+      var year = parseInt(date.substring(6));
+   } else {
+      var day = new Date().getDate();
+      var month = new Date().getMonth();
+      var year = new Date().getFullYear();
+   }
+   var new_date = new CalendarDate(day, month, year);
+   new_date.display();
 }
 
 /**
@@ -38,7 +73,7 @@ var start_new_calendar = function(date){
  */
 var chance_year = function(count){
   new_date.year = new_date.year + count;
-  drow_entire_calendar();
+  new_date.display();
 }
 
 /**
@@ -87,8 +122,8 @@ var chance_month = function(count){
  *
  * @returns {Number} день недели числом от 0 до 6, понедельник 0, вторник 1... воскресенье 6 (например, 1)
  */
-var get_week_day_of_first_day = function() {
-  var date = new Date(new_date.year, new_date.month, 1);
+var get_week_day_of_first_day = function(year, month) {
+  var date = new Date(year, month, 1);
   var week_day = date.getDay() - 1;
   if (week_day === -1) {week_day = 6;}
   return week_day;
@@ -102,9 +137,9 @@ var get_week_day_of_first_day = function() {
  *
  * @returns {Number} количество дней (например, 31)
  */
-var get_all_days_in_month = function(){
+var get_all_days_in_month = function(year, month){
   var days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  var all_days = days_in_month[new_date.month];
-  if (new_date.year % 4 === 0 && new_date.month === 1){all_days = 29;}
+  var all_days = days_in_month[month];
+  if (year % 4 === 0 && month === 1){all_days = 29;}
   return all_days;
 }
