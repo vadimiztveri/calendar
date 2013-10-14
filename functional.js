@@ -8,9 +8,9 @@
  * @constructor
  */
 function CalendarDate(day, month, year) {
-  this.day = day;
-  this.month = month;
-  this.year = year;
+   this.day = day;
+   this.month = month;
+   this.year = year;
 }
 
 /**
@@ -20,23 +20,18 @@ function CalendarDate(day, month, year) {
  * Не возвращает данные.
 */
 CalendarDate.prototype.display = function () {
-  display_full_date_in_area(this.day, this.month, this.year);
-  draw_new_year(this.year);
-  draw_new_month(this.month);
-  draw_new_days(this.year, this.month);
-  change_day_in_calendar(this.day);
+   display_full_date_in_area(this.day, this.month, this.year);
+   draw_new_year(this.year);
+   draw_new_month(this.month);
+   draw_new_days(this.year, this.month);
+   change_day_in_calendar(this.day);
 };
 
 /**
- * Запускает отображение календаря
- *
- * @this {CalendarDate}
- * Не возвращает данные.
-*/
-CalendarDate.prototype.chance_year = function (count) {
-  this.year += count;
-  this.display();
-};
+ * Глобальная переменная, которая хранит в себе объект даты
+ * Ссылается на конструктор CalendarDate
+ */
+var New_Date;
 
 /**
  * Создает новый календать по дате. Если дата не передана, то добавялет сегодняшний день
@@ -58,8 +53,8 @@ var start_new_calendar = function(date) {
       var month = new Date().getMonth();
       var year = new Date().getFullYear();
    }
-   var new_date = new CalendarDate(day, month, year);
-   new_date.display();
+   New_Date = new CalendarDate(day, month, year);
+   New_Date.display();
 }
 
 /**
@@ -72,24 +67,8 @@ var start_new_calendar = function(date) {
  * Не возвращает данные.
  */
 var chance_year = function(count){
-  new_date.year = new_date.year + count;
-  new_date.display();
-}
-
-/**
- * Получает новое число из даты (без месяца и года), запускает две функции: отображения смены даты и вывода новой даты в поле.
- *
- * @example
- * change_day(3);
- *
- * @param {Number} number число даты, от 1 до 31 (например: 3).
- * Не возвращает значений.
- */
-var change_day = function(number) {
-  var old_day = new_date.day;
-  new_date.day = number;
-  display_full_date_in_area();
-  change_day_in_calendar(new_date.day, old_day);
+   New_Date.year += count;
+   New_Date.display();
 }
 
 /**
@@ -102,16 +81,30 @@ var change_day = function(number) {
  * Не возвращает данные.
  */
 var chance_month = function(count){
-  new_date.month = new_date.month + count;
-  if (new_date.month === 12) {
-    new_date.month = 0;
-    new_date.year++;
-  }
-  if (new_date.month === -1) {
-    new_date.month = 11;
-    new_date.year--;
-  }
-  drow_entire_calendar();
+   New_Date.month += count;
+   if (New_Date.month === 12) {
+      New_Date.month = 0;
+      New_Date.year++;
+   }
+   if (New_Date.month === -1) {
+      New_Date.month = 11;
+      New_Date.year--;
+   }
+   New_Date.display();
+}
+
+/**
+ * Получает новое число из даты (без месяца и года), запускает две функции: отображения смены даты и вывода новой даты в поле.
+ *
+ * @example
+ * change_day(3);
+ *
+ * @param {Number} number число даты, от 1 до 31 (например: 3).
+ * Не возвращает значений.
+ */
+var change_day = function(number) {
+   New_Date.day = number;
+   New_Date.display();
 }
 
 /**
@@ -123,10 +116,10 @@ var chance_month = function(count){
  * @returns {Number} день недели числом от 0 до 6, понедельник 0, вторник 1... воскресенье 6 (например, 1)
  */
 var get_week_day_of_first_day = function(year, month) {
-  var date = new Date(year, month, 1);
-  var week_day = date.getDay() - 1;
-  if (week_day === -1) {week_day = 6;}
-  return week_day;
+   var date = new Date(year, month, 1);
+   var week_day = date.getDay() - 1;
+   if (week_day === -1) {week_day = 6;}
+   return week_day;
 }
 
 /**

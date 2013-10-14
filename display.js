@@ -15,24 +15,15 @@ var close_calender = function(){
 }
 
 /**
- * Выводит дату текстом в поле ввода.
- * Не получает и не возвращает значений. Дату берет из конфигурационных значений.
- */
-var display_full_date_in_area = function(day, month, year){
-  var month_case = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
-  document.getElementById('result').value = day + " " + month_case[month] + " " + year;
-}
-
-/**
  * Переписывает год, и ближайшие два года (до и после) в календаре.
  *
  * @example
  * draw_new_year();
  *
- * Не возвращает значений. Год берет из new_date.
+ * Не возвращает значений.
  */
 var draw_new_year = function(year) {
-  var text_year = "<a onclick='new_date.chance_year(-1)' id='year-minus'>" + (year - 1) + "&nbsp;←</a> " + year + " <a onclick='new_date.chance_year(1)' id='year-plus'>→&nbsp;" + (year + 1) + "</a>";
+  var text_year = "<a onclick='chance_year(-1)' id='year-minus'>" + (year - 1) + "&nbsp;←</a> " + year + " <a onclick='chance_year(1)' id='year-plus'>→&nbsp;" + (year + 1) + "</a>";
   document.getElementById('year').innerHTML = text_year;
 }
 
@@ -42,7 +33,7 @@ var draw_new_year = function(year) {
  * @example
  * draw_new_month();
  *
- * Не возвращает значений. Месяц берет из new_date.
+ * Не возвращает значений.
  */
 var draw_new_month = function(month) {
   var monthes = ["Декабрь", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь", "Январь"];
@@ -51,12 +42,21 @@ var draw_new_month = function(month) {
 }
 
 /**
- * Меняет отображение всех дат в месяце.
+ * Выводит дату текстом в поле ввода.
+ * Не получает и не возвращает значений.
+ */
+var display_full_date_in_area = function(day, month, year){
+  var month_case = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+  document.getElementById('result').value = day + " " + month_case[month] + " " + year;
+}
+
+/**
+ * Меняет отображение всех дат.
  *
  * @example
  * draw_new_days();
  *
- * Не возвращает значений. Год, месяц и дату берет из new_date.
+ * Не возвращает значений.
  */
 var draw_new_days = function(year, month) {
   var text_days = "",
@@ -81,17 +81,12 @@ var draw_new_days = function(year, month) {
  * Получает старое и новое числа даты и сменяет отображение в календаре.
  *
  * @example
- * change_day_in_calendar(13, 3);
+ * change_day_in_calendar(13);
  *
  * @param {Number} new_day число даты, от 1 до 31 (например: 13).
- * @param {Number} old_day число даты, от 1 до 31 (например: 3).
  * Не возвращает значений.
  */
-var change_day_in_calendar = function(new_day, old_day) {
+var change_day_in_calendar = function(new_day) {
   var id_new = "date" + new_day;
   document.getElementById(id_new).style.background = '#ccc';
-  if (old_day) {
-    var id_old = "date" + old_day;
-    document.getElementById(id_old).style.background = 'transparent'
-  };
 }
