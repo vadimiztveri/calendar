@@ -15,6 +15,15 @@ var close_calender = function(){
 }
 
 /**
+ * Выводит дату текстом в поле ввода.
+ * Не получает и не возвращает значений.
+ */
+var display_full_date_in_area = function(day, month, year){
+  var month_case = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+  document.getElementById('result').value = day + " " + month_case[month] + " " + year;
+}
+
+/**
  * Переписывает год, и ближайшие два года (до и после) в календаре.
  *
  * @example
@@ -42,15 +51,6 @@ var draw_new_month = function(month) {
 }
 
 /**
- * Выводит дату текстом в поле ввода.
- * Не получает и не возвращает значений.
- */
-var display_full_date_in_area = function(day, month, year){
-  var month_case = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
-  document.getElementById('result').value = day + " " + month_case[month] + " " + year;
-}
-
-/**
  * Меняет отображение всех дат.
  *
  * @example
@@ -59,22 +59,25 @@ var display_full_date_in_area = function(day, month, year){
  * Не возвращает значений.
  */
 var draw_new_days = function(year, month) {
-  var text_days = "",
+   var text_days = "",
       week_day_of_first = get_week_day_of_first_day(year, month);
-  for (i = 0;i < (week_day_of_first + get_all_days_in_month(year, month));i++) {
-    if (i < week_day_of_first){
-      text_days = text_days + "<li class='empty'>&nbsp;</li>";
-    } else {
+   for (i = 0;i < (week_day_of_first + get_all_days_in_month(year, month));i++) {
+      if (i < week_day_of_first){
+         text_days = text_days + "<li class='empty'>&nbsp;</li>";
+      } else {
       var day = i - week_day_of_first + 1;
       if (i % 7 === 5 || i % 7 === 6) {
-        text_days = text_days + "<li class='weekend'>";
-      } else {
-        text_days = text_days + "<li>";
+         text_days = text_days + "<li class='weekend'>";
+         } else {
+            text_days = text_days + "<li>";
+         }
+         text_days = text_days + "<a id='date" + day + "' onclick='change_day(" + day + ")'>" + day + "</a></li>";
       }
-      text_days = text_days + "<a id='date" + day + "' onclick='change_day(" + day + ")'>" + day + "</a></li>";
-    }
-  }
-  document.getElementById('days').innerHTML = text_days;
+   }
+   document.getElementById('days').innerHTML = text_days;
+   if (year === Old_Date.year & month ===Old_Date.month){
+      change_day_in_calendar(Old_Date.day);
+   }
 }
 
 /**
@@ -86,7 +89,7 @@ var draw_new_days = function(year, month) {
  * @param {Number} new_day число даты, от 1 до 31 (например: 13).
  * Не возвращает значений.
  */
-var change_day_in_calendar = function(new_day) {
-  var id_new = "date" + new_day;
-  document.getElementById(id_new).style.background = '#ccc';
+var change_day_in_calendar = function(day) {
+   var id_new = "date" + day;
+   document.getElementById(id_new).style.background = '#ccc';
 }

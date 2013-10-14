@@ -24,14 +24,14 @@ CalendarDate.prototype.display = function () {
    draw_new_year(this.year);
    draw_new_month(this.month);
    draw_new_days(this.year, this.month);
-   change_day_in_calendar(this.day);
 };
 
 /**
- * Глобальная переменная, которая хранит в себе объект даты
- * Ссылается на конструктор CalendarDate
+ * Глобальные переменные, которая хранит в себе объект даты
+ * Получает из конструтора CalendarDate
  */
 var New_Date;
+var Old_Date;
 
 /**
  * Создает новый календать по дате. Если дата не передана, то добавялет сегодняшний день
@@ -54,7 +54,9 @@ var start_new_calendar = function(date) {
       var year = new Date().getFullYear();
    }
    New_Date = new CalendarDate(day, month, year);
+   Old_Date = new CalendarDate(day, month, year);
    New_Date.display();
+   change_day_in_calendar(New_Date.day);
 }
 
 /**
@@ -68,6 +70,7 @@ var start_new_calendar = function(date) {
  */
 var chance_year = function(count){
    New_Date.year += count;
+   console.log(New_Date.year + " - " + Old_Date.year)
    New_Date.display();
 }
 
@@ -104,7 +107,10 @@ var chance_month = function(count){
  */
 var change_day = function(number) {
    New_Date.day = number;
-   New_Date.display();
+   Old_Date.day = number;
+   Old_Date.month = New_Date.month;
+   Old_Date.year = New_Date.year;
+   change_day_in_calendar(New_Date.day);
 }
 
 /**
