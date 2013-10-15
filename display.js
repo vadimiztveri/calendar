@@ -51,7 +51,7 @@ var draw_new_month = function(month) {
 }
 
 /**
- * Меняет отображение всех дат.
+ * Меняет отображение всех дат в одном месяце.
  *
  * @example
  * draw_new_days();
@@ -60,16 +60,16 @@ var draw_new_month = function(month) {
  */
 var draw_new_days = function(year, month) {
    var text_days = "",
-      week_day_of_first = get_week_day_of_first_day(year, month);
+       week_day_of_first = get_week_day_of_first_day(year, month);
    for (i = 0;i < (week_day_of_first + get_all_days_in_month(year, month));i++) {
       if (i < week_day_of_first){
-         text_days = text_days + "<li class='empty'>&nbsp;</li>";
+         text_days += "<li class='empty'>&nbsp;</li>";
       } else {
       var day = i - week_day_of_first + 1;
       if (i % 7 === 5 || i % 7 === 6) {
-         text_days = text_days + "<li class='weekend'>";
+         text_days += "<li class='weekend'>";
          } else {
-            text_days = text_days + "<li>";
+            text_days += "<li>";
          }
          text_days = text_days + "<a id='date" + day + "' onclick='change_day(" + day + ")'>" + day + "</a></li>";
       }

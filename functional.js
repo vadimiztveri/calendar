@@ -20,7 +20,6 @@ function CalendarDate(day, month, year) {
  * Не возвращает данные.
 */
 CalendarDate.prototype.display = function () {
-   display_full_date_in_area(this.day, this.month, this.year);
    draw_new_year(this.year);
    draw_new_month(this.month);
    draw_new_days(this.year, this.month);
@@ -70,7 +69,6 @@ var start_new_calendar = function(date) {
  */
 var chance_year = function(count){
    New_Date.year += count;
-   console.log(New_Date.year + " - " + Old_Date.year)
    New_Date.display();
 }
 
@@ -110,6 +108,8 @@ var change_day = function(number) {
    Old_Date.day = number;
    Old_Date.month = New_Date.month;
    Old_Date.year = New_Date.year;
+   New_Date.display();
+   display_full_date_in_area(Old_Date.day, Old_Date.month, Old_Date.year);
    change_day_in_calendar(New_Date.day);
 }
 
