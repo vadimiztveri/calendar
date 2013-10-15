@@ -3,15 +3,15 @@
  * Не получает и не возвращает значений.
  */
 var make_calendar_visible = function(){
-  document.getElementById("calender").style.display = "block";
+  document.getElementById("calendar").style.display = "block";
 }
 
 /**
  * Делает календарь не видимым.
  * Не получает и не возвращает значений.
  */
-var close_calender = function(){
-  document.getElementById("calender").style.display = "none";
+var close_calendar = function(){
+  document.getElementById("calendar").style.display = "none";
 }
 
 /**
@@ -27,12 +27,12 @@ var display_full_date_in_area = function(day, month, year){
  * Переписывает год, и ближайшие два года (до и после) в календаре.
  *
  * @example
- * draw_new_year();
+ * draw_new_year(2013);
  *
  * Не возвращает значений.
  */
-var draw_new_year = function(year) {
-  var text_year = "<a onclick='chance_year(-1)' id='year-minus'>" + (year - 1) + "&nbsp;←</a> " + year + " <a onclick='chance_year(1)' id='year-plus'>→&nbsp;" + (year + 1) + "</a>";
+var draw_new_year = function(years) {
+  var text_year = "<a onclick='change_year(-1)' id='year-minus'>" + years[0] + "&nbsp;←</a> " + years[1] + " <a onclick='change_year(1)' id='year-plus'>→&nbsp;" + years[2] + "</a>";
   document.getElementById('year').innerHTML = text_year;
 }
 
@@ -40,13 +40,12 @@ var draw_new_year = function(year) {
  * Переписывает месяц, и ближайшие два месяца (до и после) в календаре.
  *
  * @example
- * draw_new_month();
+ * draw_new_month(9);
  *
  * Не возвращает значений.
  */
-var draw_new_month = function(month) {
-  var monthes = ["Декабрь", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь", "Январь"];
-  var text_month = "<a onclick='chance_month(-1)' id='month-minus'>" + monthes[month] + "&nbsp;←</a> " + monthes[month + 1] + " <a onclick='chance_month(1)' id='month-plus'>→&nbsp;" + monthes[month + 2] + "</a>";
+var draw_new_month = function(months) {
+  var text_month = "<a onclick='change_month(-1)' id='month-minus'>" + months[0] + "&nbsp;←</a> " + months[1] + " <a onclick='change_month(1)' id='month-plus'>→&nbsp;" + months[2] + "</a>";
   document.getElementById('month').innerHTML = text_month;
 }
 
@@ -54,18 +53,17 @@ var draw_new_month = function(month) {
  * Меняет отображение всех дат в одном месяце.
  *
  * @example
- * draw_new_days();
+ * draw_new_days(2013, 9);
  *
  * Не возвращает значений.
  */
 var draw_new_days = function(year, month) {
-   var text_days = "",
-       week_day_of_first = get_week_day_of_first_day(year, month);
-   for (i = 0;i < (week_day_of_first + get_all_days_in_month(year, month));i++) {
-      if (i < week_day_of_first){
+   var text_days = "";
+   for (i = 0;i < (month.get_week_day_of_first_day() + month.get_all_days_in_month());i++) {
+      if (i < month.get_week_day_of_first_day()){
          text_days += "<li class='empty'>&nbsp;</li>";
       } else {
-      var day = i - week_day_of_first + 1;
+      var day = i - month.get_week_day_of_first_day() + 1;
       if (i % 7 === 5 || i % 7 === 6) {
          text_days += "<li class='weekend'>";
          } else {
@@ -75,8 +73,8 @@ var draw_new_days = function(year, month) {
       }
    }
    document.getElementById('days').innerHTML = text_days;
-   if (year === Old_Date.year & month ===Old_Date.month){
-      change_day_in_calendar(Old_Date.day);
+   if (year === New_Date.year_for_display & month === New_Date.month_for_display){
+      change_day_in_calendar(New_Date.day);
    }
 }
 

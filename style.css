@@ -1,7 +1,7 @@
 html{font-family:sans-serif;color:#555555;}
 button{font-size:200%;padding:10 20px;}
 
-#calender{border:4px solid #777777;border-radius:4px;width:300px;margin:20px 0 20px 0;display:none;}
+#calendar{border:4px solid #777777;border-radius:4px;width:300px;margin:20px 0 20px 0;display:none;}
 
 #year, #month{border-bottom:1px solid #ccc;width:300px;text-align:center;}
 #year a, #month a{font-size:70%;color:#aaa;text-decoration:none;cursor:pointer;}
