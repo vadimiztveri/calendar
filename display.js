@@ -1,10 +1,29 @@
-
 document.getElementById('result').onclick = function(){
    document.getElementById('calendar').style.display = "block";
 }
 
 document.getElementById('close').onclick = function(){
    document.getElementById('calendar').style.display = "none";
+}
+
+document.getElementById('year-minus').onclick = function(){
+   change_year(-1);
+}
+
+document.getElementById('year-plus').onclick = function(){
+   change_year(1);
+}
+
+document.getElementById('month-minus').onclick = function(){
+   change_month(-1);
+}
+
+document.getElementById('month-plus').onclick = function(){
+   change_month(1);
+}
+
+document.getElementsByClassName('calendar-day').onclick = function(){
+   console.log("!");
 }
 
 /**
@@ -25,8 +44,9 @@ var display_full_date_in_area = function(){
  * Не возвращает значений.
  */
 var draw_new_year = function(years) {
-  var text_year = "<a onclick='change_year(-1)' id='year-minus'>" + years[0] + "&nbsp;←</a> " + years[1] + " <a onclick='change_year(1)' id='year-plus'>→&nbsp;" + years[2] + "</a>";
-  document.getElementById('year').innerHTML = text_year;
+   document.getElementById('year-minus').innerHTML = years[0] + "&nbsp;←&nbsp;";
+   document.getElementById('year-selected').innerHTML = years[1];
+   document.getElementById('year-plus').innerHTML = "&nbsp;→&nbsp;" + years[2];
 }
 
 /**
@@ -39,8 +59,9 @@ var draw_new_year = function(years) {
  * Не возвращает значений.
  */
 var draw_new_month = function(months) {
-  var text_month = "<a onclick='change_month(-1)' id='month-minus'>" + months[0] + "&nbsp;←</a> " + months[1] + " <a onclick='change_month(1)' id='month-plus'>→&nbsp;" + months[2] + "</a>";
-  document.getElementById('month').innerHTML = text_month;
+   document.getElementById('month-minus').innerHTML = months[0] + "&nbsp;←&nbsp;";
+   document.getElementById('month-selected').innerHTML = months[1];
+   document.getElementById('month-plus').innerHTML = "&nbsp;→&nbsp;" + months[2];
 }
 
 /**
@@ -63,9 +84,9 @@ var draw_new_days = function(year, month) {
       } else {
       var day = i - week_day + 1;
       if (i % 7 === 5 || i % 7 === 6) {
-         text_days += "<li class='weekend'>";
+         text_days += "<li class='calendar-day weekend'>";
          } else {
-            text_days += "<li>";
+            text_days += "<li class='calendar-day'>";
          }
          text_days = text_days + "<a id='date" + day + "' onclick='change_day(" + day + ")'>" + day + "</a></li>";
       }

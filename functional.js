@@ -12,16 +12,6 @@ function CalendarDate(date) {
 }
 
 /**
- * Отдает коллекцию годов
- *
- * @this {CalendarDate}
- * @return {Array} Три числа, предыдущий год, настоящий год, последующий год (например: [2012, 2013, 2014])
- */
-CalendarDate.prototype.year_collection = function () {
-   return [(this.year - 1), this.year, (this.year + 1)];
-};
-
-/**
  * @example
  * new Year(2013);
  *
