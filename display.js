@@ -1,33 +1,26 @@
-/**
- * Делает календарь видимым.
- * Не получает и не возвращает значений.
- */
-var make_calendar_visible = function(){
-  document.getElementById("calendar").style.display = "block";
+
+document.getElementById('result').onclick = function(){
+   document.getElementById('calendar').style.display = "block";
 }
 
-/**
- * Делает календарь не видимым.
- * Не получает и не возвращает значений.
- */
-var close_calendar = function(){
-  document.getElementById("calendar").style.display = "none";
+document.getElementById('close').onclick = function(){
+   document.getElementById('calendar').style.display = "none";
 }
 
 /**
  * Выводит дату текстом в поле ввода.
  * Не получает и не возвращает значений.
  */
-var display_full_date_in_area = function(day, month, year){
+var display_full_date_in_area = function(){
   var month_case = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
-  document.getElementById('result').value = day + " " + month_case[month] + " " + year;
+  document.getElementById('result').value = New_Date.day + " " + month_case[New_Date.month.selected] + " " + New_Date.year.selected;
 }
 
 /**
  * Переписывает год, и ближайшие два года (до и после) в календаре.
  *
  * @example
- * draw_new_year(2013);
+ * draw_new_year([2012, 2013, 2014]);
  *
  * Не возвращает значений.
  */
@@ -40,8 +33,9 @@ var draw_new_year = function(years) {
  * Переписывает месяц, и ближайшие два месяца (до и после) в календаре.
  *
  * @example
- * draw_new_month(9);
+ * draw_new_month(["Сентярь", "Октябрь", "Ноябрь"]);
  *
+ * @param {Array} months Колелкция наименований месяцев (например: ["Сентярь", "Октябрь", "Ноябрь"])
  * Не возвращает значений.
  */
 var draw_new_month = function(months) {
@@ -53,17 +47,21 @@ var draw_new_month = function(months) {
  * Меняет отображение всех дат в одном месяце.
  *
  * @example
- * draw_new_days(2013, 9);
+ * draw_new_days(2013, month);
  *
+ * @param {Number} year (например: 2013)
+ * @param {Object} month Объект, содержащий данные о месяце, класса Month
  * Не возвращает значений.
  */
 var draw_new_days = function(year, month) {
-   var text_days = "";
-   for (i = 0;i < (month.get_week_day_of_first_day() + month.get_all_days_in_month());i++) {
-      if (i < month.get_week_day_of_first_day()){
+   var text_days = "",
+       week_day = month.get_week_day_of_first_day(year);
+
+   for (i = 0;i < (week_day + month.get_all_days_in_month(year));i++) {
+      if (i < week_day){
          text_days += "<li class='empty'>&nbsp;</li>";
       } else {
-      var day = i - month.get_week_day_of_first_day() + 1;
+      var day = i - week_day + 1;
       if (i % 7 === 5 || i % 7 === 6) {
          text_days += "<li class='weekend'>";
          } else {
@@ -73,7 +71,8 @@ var draw_new_days = function(year, month) {
       }
    }
    document.getElementById('days').innerHTML = text_days;
-   if (year === New_Date.year_for_display & month === New_Date.month_for_display){
+
+   if (year === New_Date.year.selected && month.number === New_Date.month.selected){
       change_day_in_calendar(New_Date.day);
    }
 }
@@ -87,7 +86,7 @@ var draw_new_days = function(year, month) {
  * @param {Number} new_day число даты, от 1 до 31 (например: 13).
  * Не возвращает значений.
  */
-var change_day_in_calendar = function(day) {
-   var id_new = "date" + day;
+var change_day_in_calendar = function() {
+   var id_new = "date" + New_Date.day;
    document.getElementById(id_new).style.background = '#ccc';
 }
