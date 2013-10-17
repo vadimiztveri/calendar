@@ -45,10 +45,10 @@ var display_full_date_in_area = function(){
  *
  * Не возвращает значений.
  */
-var draw_new_year = function(years) {
-   document.getElementById('year-minus').innerHTML = years[0] + "&nbsp;←&nbsp;";
-   document.getElementById('year-selected').innerHTML = years[1];
-   document.getElementById('year-plus').innerHTML = "&nbsp;→&nbsp;" + years[2];
+var draw_new_year = function(year) {
+   document.getElementById('year-minus').innerHTML = (year - 1) + "&nbsp;←&nbsp;";
+   document.getElementById('year-selected').innerHTML = year;
+   document.getElementById('year-plus').innerHTML = "&nbsp;→&nbsp;" + (year + 1);
 }
 
 /**
@@ -60,10 +60,11 @@ var draw_new_year = function(years) {
  * @param {Array} months Колелкция наименований месяцев (например: ["Сентярь", "Октябрь", "Ноябрь"])
  * Не возвращает значений.
  */
-var draw_new_month = function(months) {
-   document.getElementById('month-minus').innerHTML = months[0] + "&nbsp;←&nbsp;";
-   document.getElementById('month-selected').innerHTML = months[1];
-   document.getElementById('month-plus').innerHTML = "&nbsp;→&nbsp;" + months[2];
+var draw_new_month = function(month) {
+   months_name = ["Декабрь", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь", "Январь"];
+   document.getElementById('month-minus').innerHTML = months_name[month] + "&nbsp;←&nbsp;";
+   document.getElementById('month-selected').innerHTML = months_name[month + 1];
+   document.getElementById('month-plus').innerHTML = "&nbsp;→&nbsp;" + months_name[month + 2];
 }
 
 /**

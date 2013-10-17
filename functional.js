@@ -1,37 +1,45 @@
 /**
  * @example
- * new_date = new  CalendarDate(11, 10, 2013);
+ * new_date = new Calendar(2013);
  *
- * @param {Array} date три значения, день, номер месяца от 0, год (например: [11, 09, 2013])
+ * @param {Number} year (например: 2013)
  * @constructor
  */
-function CalendarDate(date) {
-   this.year = new Year(date[2]);
-   this.month = new Month(date[1]);
-   this.day = date[0];
+function Calendar(year) {
+   this.year = new Array();
+   for (var i = 0; i < 5; i++){
+      this.year.push(new Year(year - 2 + i));
+   }
 }
+
+
+Calendar.prototype.run = function () {
+   for (var i = 0; i < 5; i++){
+      console.log(this.year[i].number);
+      for (var j = 0; j < 12; j++){
+         console.log(this.year[i].month[j].name() + " - " + this.year[i].month[j].get_week_day_of_first_day() + " - " + this.year[i].month[j].get_all_days_in_month());
+         for (var k = 0; k < 30; k++){
+            console.log(this.year[i].month[j].day[k].number + 1);
+         }
+      }
+   }
+}
+
 
 /**
  * @example
  * new Year(2013);
  *
- * @param {Number} number год (например: 9)
+ * @param {Number} number год (например: 2013)
  * @constructor
  */
-var Year = function(number) {
-  this.number = number;
-  this.selected = number;
+function Year(year) {
+   this.number = year;
+   this.month = new Array();
+   for (var i = 0; i < 12; i++) {
+      this.month.push(new Month(i, year));
+   }
 }
-
-/**
- * Отдает коллекцию лет
- *
- * @this {Year}
- * @return {Array} Три месяца строками (например: ["Сентябрь", "Октябрь", "Ноябрь"])
- */
-Year.prototype.collection = function () {
-   return [(this.number - 1), this.number, (this.number + 1)];
-};
 
 /**
  * @example
@@ -40,30 +48,46 @@ Year.prototype.collection = function () {
  * @param {Number} number номер месяца (например: 9)
  * @constructor
  */
-var Month = function(number) {
-  this.number = number;
-  this.selected = number;
+var Month = function(month, year) {
+   this.number = month;
+   this.year = year;
+   this.day = new Array();
+   for (var i = 0; i < 30; i++) {
+      this.day.push(new Day(i, month, year));
+   }
 }
 
 /**
- * Отдает коллекцию месяцев
+ * Возвращает название месяца
  *
  * @this {Month}
- * @return {Array} Три месяца строками (например: ["Сентябрь", "Октябрь", "Ноябрь"])
+ * @return {String} (например: "Октябрь")
  */
-Month.prototype.collection_name = function () {
-   var monthes = ["Декабрь", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь", "Январь"];
-   return [monthes[this.number], monthes[this.number + 1], monthes[this.number + 2]];
+Month.prototype.name = function () {
+   var names_monthes = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+   return names_monthes[this.number];
 };
+
+/**
+ * Возвращает название месяца c маленькой буквы в родительном падеже
+ *
+ * @this {Month}
+ * @return {String} (например: "Октябрь")
+ */
+Month.prototype.name_case = function () {
+   var names_monthes_case = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+   return names_monthes_case[this.number];
+};
+
 
 /**
  * Возвращает номер дня недели первого дня в месяца
  *
- * @this {CalendarDate}
- * Не возвращает данные.
+ * @this {Month}
+ * @return {Number} число от 0 6 (например: 6)
  */
-Month.prototype.get_week_day_of_first_day = function (year) {
-   var date = new Date(year, this.number, 1);
+Month.prototype.get_week_day_of_first_day = function () {
+   var date = new Date(this.year, this.number, 1);
    var week_day = date.getDay() - 1;
    if (week_day === -1) {week_day = 6;}
    return week_day;
@@ -72,15 +96,34 @@ Month.prototype.get_week_day_of_first_day = function (year) {
 /**
  * Возвращает номер дня недели первого дня в месяца
  *
- * @this {CalendarDate}
+ * @this {Month}
  * Не возвращает данные.
  */
-Month.prototype.get_all_days_in_month = function (year) {
-  var days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  var all_days = days_in_month[this.number];
-  if (year % 4 === 0 && this.number === 1){all_days = 29;}
-  return all_days;
+Month.prototype.get_all_days_in_month = function () {
+   var days_in_month = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+   var all_days = days_in_month[this.number];
+   if (this.year % 4 === 0 && this.number === 1){all_days = 29;}
+   return all_days;
 };
+
+/**
+ * @example
+ * new Day(17, 9, 2013);
+ *
+ * @param {Number} day (например: 17)
+ * @param {Number} month (например: 9)
+ * @param {Number} year (например: 2013)
+ * @constructor
+ */
+var Day = function (day, month, year) {
+   this.number = day;
+   this.month = month;
+   this.year = year;
+   this.selected = false;
+}
+
+
+
 
 /**
  * Запускает отображение календаря
@@ -88,17 +131,31 @@ Month.prototype.get_all_days_in_month = function (year) {
  * @this {CalendarDate}
  * Не возвращает данные.
  */
-CalendarDate.prototype.display = function () {
-   draw_new_year(this.year.collection());
-   draw_new_month(this.month.collection_name());
+Calendar.prototype.display = function () {
+   draw_new_year(this.year[Operating_Date[1] - 2011].number);
+   draw_new_month(this.year[Operating_Date[1] - 2011].month[Operating_Date[0]].number);
+/*
    draw_new_days(this.year.number, this.month);
+*/
 };
 
 /**
- * Глобальные переменные, которая хранит в себе объект даты
+ * Глобальная переменные, которая хранит в себе объект дат
  * Получает из конструтора CalendarDate
  */
 var New_Date;
+
+/**
+ * Глобальная переменные, которая хранит в себе Массив выбранной пользователем даты
+ * Например: [17, 09, 2013]
+ */
+var Selected_Date;
+
+/**
+ * Глобальная переменные, которая хранит в себе временные месяц и год, для отображения в календаре 
+ * Например: [09, 2013]
+ */
+var Operating_Date;
 
 /**
  * Создает новый календать по дате. Если дата не передана, то добавялет сегодняшний день
@@ -115,7 +172,9 @@ var start_new_calendar = function(date) {
    } else {
       var date_in_array = [new Date().getDate(), new Date().getMonth(), new Date().getFullYear()];
    }
-   New_Date = new CalendarDate(date_in_array);
+   Selected_Date = date_in_array;
+   Operating_Date = [date_in_array[1], date_in_array[2]];
+   New_Date = new Calendar(date_in_array[2]);
    New_Date.display();
 }
 
