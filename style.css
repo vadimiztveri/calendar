@@ -10,11 +10,11 @@ ul.week-days li{display:block;float:left;width:42px;margin:0;padding:0;text-alig
 ul.week-days li.weekend{color:#ff5555;}
 
 #days{display:block;width:300px;overflow:hidden;padding:0;}
-#days li{display:block;float:left;width:42px;margin:0;padding:0;text-align:right;border-bottom:1px solid #ccc;}
+#days li{display:block;float:left;width:38px;margin:0;padding:0 4px 0 0;text-align:right;border-bottom:1px solid #ccc;cursor:pointer;}
 #days li.empty{border:none;}
 #days li.weekend{color:#ff5555;}
-#days li a{display:block;width:38px;padding:0 4px 0 0;cursor:pointer;}
-#days li a:hover{text-decoration:underline;}
+#days li:hover{text-decoration:underline;}
+#days li.selected{background:#ccc;}
 
 #close{text-align:center;font-size:70%;cursor:pointer;color:#aaa;}
 #close:hover{color:#ff0000;}

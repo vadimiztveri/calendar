@@ -2,28 +2,30 @@ document.getElementById('result').onclick = function(){
    document.getElementById('calendar').style.display = "block";
 }
 
-document.getElementById('close').onclick = function(){
-   document.getElementById('calendar').style.display = "none";
-}
+document.getElementById('calendar').onclick = function(){
+   var clicking_element = event.target || event.srcElement;
 
-document.getElementById('year-minus').onclick = function(){
-   change_year(-1);
-}
+   switch (clicking_element.id) {
+      case "year-minus":
+         change_year(-1);
+         break;
+      case "year-plus":
+         change_year(1);
+         break;
+      case "month-minus":
+         change_month(-1);
+         break;
+      case "month-plus":
+         change_month(1);
+         break;
+      case "close":
+         document.getElementById('calendar').style.display = "none";
+         break;
+   }
 
-document.getElementById('year-plus').onclick = function(){
-   change_year(1);
-}
-
-document.getElementById('month-minus').onclick = function(){
-   change_month(-1);
-}
-
-document.getElementById('month-plus').onclick = function(){
-   change_month(1);
-}
-
-document.getElementsByClassName('calendar-day').onclick = function(){
-   console.log("!");
+   if (clicking_element.className.substring(0, 12) === 'calendar-day'){
+      change_day(clicking_element.innerHTML);
+   }
 }
 
 /**
@@ -84,30 +86,15 @@ var draw_new_days = function(year, month) {
       } else {
       var day = i - week_day + 1;
       if (i % 7 === 5 || i % 7 === 6) {
-         text_days += "<li class='calendar-day weekend'>";
+         text_days += "<li class='calendar-day weekend";
          } else {
-            text_days += "<li class='calendar-day'>";
+            text_days += "<li class='calendar-day";
          }
-         text_days = text_days + "<a id='date" + day + "' onclick='change_day(" + day + ")'>" + day + "</a></li>";
+         if (day === New_Date.day) {
+            text_days += " selected";
+         }
+         text_days += "'>" + day + "</li>";
       }
    }
    document.getElementById('days').innerHTML = text_days;
-
-   if (year === New_Date.year.selected && month.number === New_Date.month.selected){
-      change_day_in_calendar(New_Date.day);
-   }
-}
-
-/**
- * Получает старое и новое числа даты и сменяет отображение в календаре.
- *
- * @example
- * change_day_in_calendar(13);
- *
- * @param {Number} new_day число даты, от 1 до 31 (например: 13).
- * Не возвращает значений.
- */
-var change_day_in_calendar = function() {
-   var id_new = "date" + New_Date.day;
-   document.getElementById(id_new).style.background = '#ccc';
 }

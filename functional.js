@@ -24,9 +24,9 @@ var Year = function(number) {
 }
 
 /**
- * Отдает коллекцию месяцев
+ * Отдает коллекцию лет
  *
- * @this {Month}
+ * @this {Year}
  * @return {Array} Три месяца строками (например: ["Сентябрь", "Октябрь", "Ноябрь"])
  */
 Year.prototype.collection = function () {
@@ -117,7 +117,6 @@ var start_new_calendar = function(date) {
    }
    New_Date = new CalendarDate(date_in_array);
    New_Date.display();
-   change_day_in_calendar(New_Date.day);
 }
 
 /**
@@ -171,5 +170,4 @@ var change_day = function(day) {
    New_Date.month.selected = New_Date.month.number;
    New_Date.display();
    display_full_date_in_area();
-   change_day_in_calendar();
 }
