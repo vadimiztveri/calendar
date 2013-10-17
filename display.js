@@ -91,9 +91,10 @@ var draw_new_days = function(year, month) {
          } else {
             text_days += "<li class='calendar-day";
          }
-         if (day === New_Date.day) {
-            text_days += " selected";
-         }
+         console.log(month.day[i].select);
+         //if (month.day[i].selected) {
+       //     text_days += " selected";
+     //  }
          text_days += "'>" + day + "</li>";
       }
    }

@@ -6,7 +6,8 @@
 		<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 		<link type="text/css" href="style.css" rel="stylesheet" />
 	</head>
-	<body onload="start_new_calendar();">
+	<!--body onload="start_new_calendar();"-->
+	<body>
 		<h1>Всплывающий календарь</h1>
 
 		Дата: <input id="result">
@@ -28,7 +29,7 @@
 			<div id="close">Закрыть</div>
 		</div>
 		
-		<!--button onclick="New_Date.run()">Проверить</button-->
+		<button onclick="(new Calendar(2013)).run()">Проверить</button>
 
 		<script src="display.js"></script>
 		<script src="functional.js"></script>

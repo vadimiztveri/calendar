@@ -1,6 +1,6 @@
 /**
  * @example
- * new_date = new Calendar(2013);
+ * new Calendar(2013);
  *
  * @param {Number} year (например: 2013)
  * @constructor
@@ -18,8 +18,8 @@ Calendar.prototype.run = function () {
       console.log(this.year[i].number);
       for (var j = 0; j < 12; j++){
          console.log(this.year[i].month[j].name() + " - " + this.year[i].month[j].get_week_day_of_first_day() + " - " + this.year[i].month[j].get_all_days_in_month());
-         for (var k = 0; k < 30; k++){
-            console.log(this.year[i].month[j].day[k].number + 1);
+         for (var k = 0; k < this.year[i].month[j].get_all_days_in_month(); k++){
+            console.log(this.year[i].month[j].day[k]);
          }
       }
    }
@@ -52,8 +52,9 @@ var Month = function(month, year) {
    this.number = month;
    this.year = year;
    this.day = new Array();
-   for (var i = 0; i < 30; i++) {
+   for (var i = 1; i <= this.get_all_days_in_month; i++) {
       this.day.push(new Day(i, month, year));
+      console.log(i);
    }
 }
 
@@ -119,7 +120,7 @@ var Day = function (day, month, year) {
    this.number = day;
    this.month = month;
    this.year = year;
-   this.selected = false;
+//   this.select = false;
 }
 
 
@@ -134,16 +135,14 @@ var Day = function (day, month, year) {
 Calendar.prototype.display = function () {
    draw_new_year(this.year[Operating_Date[1] - 2011].number);
    draw_new_month(this.year[Operating_Date[1] - 2011].month[Operating_Date[0]].number);
-/*
-   draw_new_days(this.year.number, this.month);
-*/
+   draw_new_days(this.year[Operating_Date[1] - 2011].number, this.year[Operating_Date[1] - 2011].month[Operating_Date[0]]);
 };
 
 /**
  * Глобальная переменные, которая хранит в себе объект дат
- * Получает из конструтора CalendarDate
+ * Получает из конструтора Calendar
  */
-var New_Date;
+var New_Calender;
 
 /**
  * Глобальная переменные, которая хранит в себе Массив выбранной пользователем даты
@@ -174,8 +173,8 @@ var start_new_calendar = function(date) {
    }
    Selected_Date = date_in_array;
    Operating_Date = [date_in_array[1], date_in_array[2]];
-   New_Date = new Calendar(date_in_array[2]);
-   New_Date.display();
+   New_Calender = new Calendar(date_in_array[2]);
+   New_Calender.display();
 }
 
 /**
