@@ -19,7 +19,7 @@ Calendar.prototype.run = function () {
       for (var j = 0; j < 12; j++){
          console.log(this.year[i].month[j].name() + " - " + this.year[i].month[j].get_week_day_of_first_day() + " - " + this.year[i].month[j].get_all_days_in_month());
          for (var k = 0; k < this.year[i].month[j].get_all_days_in_month(); k++){
-            console.log(this.year[i].month[j].day[k]);
+            console.log(this.year[i].month[j].day[k].number);
          }
       }
    }
@@ -52,9 +52,8 @@ var Month = function(month, year) {
    this.number = month;
    this.year = year;
    this.day = new Array();
-   for (var i = 1; i <= this.get_all_days_in_month; i++) {
+   for (var i = 0; i < this.get_all_days_in_month(); i++) {
       this.day.push(new Day(i, month, year));
-      console.log(i);
    }
 }
 
@@ -117,10 +116,10 @@ Month.prototype.get_all_days_in_month = function () {
  * @constructor
  */
 var Day = function (day, month, year) {
-   this.number = day;
+   this.number = day + 1;
    this.month = month;
    this.year = year;
-//   this.select = false;
+   this.selected = false;
 }
 
 
@@ -133,26 +132,26 @@ var Day = function (day, month, year) {
  * Не возвращает данные.
  */
 Calendar.prototype.display = function () {
-   draw_new_year(this.year[Operating_Date[1] - 2011].number);
-   draw_new_month(this.year[Operating_Date[1] - 2011].month[Operating_Date[0]].number);
-   draw_new_days(this.year[Operating_Date[1] - 2011].number, this.year[Operating_Date[1] - 2011].month[Operating_Date[0]]);
+   draw_new_year(this.year[Operating_Date[0] - 2011].number);
+   draw_new_month(this.year[Operating_Date[0] - 2011].month[Operating_Date[1]].number);
+   draw_new_days(this.year[Operating_Date[0] - 2011].number, this.year[Operating_Date[0] - 2011].month[Operating_Date[1]]);
 };
 
 /**
- * Глобальная переменные, которая хранит в себе объект дат
+ * Глобальная переменная, которая хранит в себе объект дат
  * Получает из конструтора Calendar
  */
 var New_Calender;
 
 /**
- * Глобальная переменные, которая хранит в себе Массив выбранной пользователем даты
- * Например: [17, 09, 2013]
+ * Глобальная переменная, которая хранит в себе Массив выбранной пользователем даты
+ * Например: [2013, 09, 18]
  */
 var Selected_Date;
 
 /**
- * Глобальная переменные, которая хранит в себе временные месяц и год, для отображения в календаре 
- * Например: [09, 2013]
+ * Глобальная переменная, которая хранит в себе временные месяц и год, для отображения в календаре 
+ * Например: [2013, 09]
  */
 var Operating_Date;
 
@@ -167,13 +166,14 @@ var Operating_Date;
  */
 var start_new_calendar = function(date) {
    if (date) {
-      var date_in_array = [parseInt(date.substring(0, 2)), parseInt(date.substring(3, 5) - 1), parseInt(date.substring(6))];
+      var date_in_array = [parseInt(date.substring(6)), parseInt(date.substring(3, 5) - 1), parseInt(date.substring(0, 2))];
    } else {
-      var date_in_array = [new Date().getDate(), new Date().getMonth(), new Date().getFullYear()];
+      var date_in_array = [new Date().getFullYear(), new Date().getMonth(), new Date().getDate()];
    }
    Selected_Date = date_in_array;
-   Operating_Date = [date_in_array[1], date_in_array[2]];
-   New_Calender = new Calendar(date_in_array[2]);
+   Operating_Date = [date_in_array[0], date_in_array[1]];
+   New_Calender = new Calendar(date_in_array[0]);
+   New_Calender.year[Selected_Date[0] - 2011].month[Selected_Date[1]].day[Selected_Date[2] - 1].selected = true;
    New_Calender.display();
 }
 
@@ -187,8 +187,8 @@ var start_new_calendar = function(date) {
  * Не возвращает данные.
  */
 var change_year = function(count){
-   New_Date.year.number += count;
-   New_Date.display();
+   Operating_Date[0] += count;
+   New_Calender.display();
 }
 
 /**
@@ -201,16 +201,16 @@ var change_year = function(count){
  * Не возвращает данные.
  */
 var change_month = function(count){
-   New_Date.month.number += count;
-   if (New_Date.month.number === 12) {
-      New_Date.month.number = 0;
-      New_Date.year.number++;
+   Operating_Date[1] += count;
+   if (Operating_Date[1] === 12) {
+      Operating_Date[1] = 0;
+      Operating_Date[0]++;
    }
-   if (New_Date.month.number === -1) {
-      New_Date.month.number = 11;
-      New_Date.year.number--;
+   if (Operating_Date[1] === -1) {
+      Operating_Date[1] = 11;
+      Operating_Date[0]--;
    }
-   New_Date.display();
+   New_Calender.display();
 }
 
 /**
@@ -223,9 +223,9 @@ var change_month = function(count){
  * Не возвращает значений.
  */
 var change_day = function(day) {
-   New_Date.day = day;
-   New_Date.year.selected = New_Date.year.number;
-   New_Date.month.selected = New_Date.month.number;
-   New_Date.display();
+   New_Calender.year[Selected_Date[0] - 2011].month[Selected_Date[1]].day[Selected_Date[2] - 1].selected = false;
+   Selected_Date = [Operating_Date[0], Operating_Date[1], day];
+   New_Calender.year[Selected_Date[0] - 2011].month[Selected_Date[1]].day[Selected_Date[2] - 1].selected = true;
+   New_Calender.display();
    display_full_date_in_area();
 }

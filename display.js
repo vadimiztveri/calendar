@@ -4,8 +4,7 @@ document.getElementById('result').onclick = function(){
 
 document.getElementById('calendar').onclick = function(){
    var clicking_element = event.target || event.srcElement;
-
-   switch (clicking_element.id) {
+   switch (clicking_element.getAttribute('role')) {
       case "year-minus":
          change_year(-1);
          break;
@@ -21,10 +20,9 @@ document.getElementById('calendar').onclick = function(){
       case "close":
          document.getElementById('calendar').style.display = "none";
          break;
-   }
-
-   if (clicking_element.className.substring(0, 12) === 'calendar-day'){
-      change_day(clicking_element.innerHTML);
+      case "day":
+         change_day(clicking_element.innerHTML);
+         break;
    }
 }
 
@@ -33,8 +31,7 @@ document.getElementById('calendar').onclick = function(){
  * Не получает и не возвращает значений.
  */
 var display_full_date_in_area = function(){
-  var month_case = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
-  document.getElementById('result').value = New_Date.day + " " + month_case[New_Date.month.selected] + " " + New_Date.year.selected;
+  document.getElementById('result').value = New_Calender.year[Selected_Date[0] - 2011].month[Selected_Date[1]].day[Selected_Date[2] - 1].number + " " + New_Calender.year[Selected_Date[0] - 2011].month[Selected_Date[1]].name_case() + " " + New_Calender.year[Selected_Date[0] - 2011].number;
 }
 
 /**
@@ -85,17 +82,16 @@ var draw_new_days = function(year, month) {
       if (i < week_day){
          text_days += "<li class='empty'>&nbsp;</li>";
       } else {
-      var day = i - week_day + 1;
+      var day = i - week_day;
       if (i % 7 === 5 || i % 7 === 6) {
          text_days += "<li class='calendar-day weekend";
          } else {
             text_days += "<li class='calendar-day";
          }
-         console.log(month.day[i].select);
-         //if (month.day[i].selected) {
-       //     text_days += " selected";
-     //  }
-         text_days += "'>" + day + "</li>";
+         if (month.day[day].selected) {
+            text_days += " selected";
+         }
+         text_days += "' role='day'>" + (day + 1) + "</li>";
       }
    }
    document.getElementById('days').innerHTML = text_days;
