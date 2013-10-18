@@ -3,27 +3,27 @@ document.getElementById('result').onclick = function(){
 }
 
 document.getElementById('calendar').onclick = function(){
-   var clicking_element = event.target || event.srcElement;
-   switch (clicking_element.getAttribute('role')) {
-      case "year-minus":
-         change_year(-1);
-         break;
-      case "year-plus":
-         change_year(1);
-         break;
-      case "month-minus":
-         change_month(-1);
-         break;
-      case "month-plus":
-         change_month(1);
-         break;
-      case "close":
-         document.getElementById('calendar').style.display = "none";
-         break;
-      case "day":
-         change_day(clicking_element.innerHTML);
-         break;
-   }
+  var clicking_element = event.target || event.srcElement;
+  switch (clicking_element.getAttribute('role')) {
+    case "year-minus":
+      change_year(-1);
+      break;
+    case "year-plus":
+      change_year(1);
+      break;
+    case "month-minus":
+      change_month(-1);
+      break;
+    case "month-plus":
+      change_month(1);
+      break;
+    case "close":
+      document.getElementById('calendar').style.display = "none";
+      break;
+    case "day":
+      change_day(clicking_element.innerHTML);
+      break;
+  }
 }
 
 /**
@@ -76,9 +76,9 @@ var draw_new_month = function(month) {
  */
 var draw_new_days = function(year, month) {
    var text_days = "",
-       week_day = month.get_week_day_of_first_day(year);
+       week_day = month.first_day(year);
 
-   for (i = 0;i < (week_day + month.get_all_days_in_month(year));i++) {
+   for (i = 0;i < (week_day + month.days_count(year));i++) {
       if (i < week_day){
          text_days += "<li class='empty'>&nbsp;</li>";
       } else {
@@ -88,9 +88,11 @@ var draw_new_days = function(year, month) {
          } else {
             text_days += "<li class='calendar-day";
          }
-         if (month.day[day].selected) {
+/*
+         if (month.days[day] === Selected_Date(2)) {
             text_days += " selected";
          }
+*/
          text_days += "' role='day'>" + (day + 1) + "</li>";
       }
    }
