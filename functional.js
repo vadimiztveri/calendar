@@ -7,29 +7,13 @@
  */
 function Calendar(year) {
   this.years = {};
+  this.current_date = [];
+  this.selected_date = [];
 
   for (var i = (year - 2); i < (year + 3); i++){
     this.years[i] = new Year(i);
   }
 }
-
-
-/**
- * Это временная функция для проверки объекта
- */
-Calendar.prototype.run = function () {
-  for(var kay in this.years) {
-    console.log(this.years[kay].number);
-    for (var j = 0; j < 12; j++){
-      console.log(this.years[kay].months[j].name + " - " + this.years[kay].months[j].first_day() + " - " + this.years[kay].months[j].days_count());
-      for (var k = 0; k < this.years[kay].months[j].days_count(); k++){
-        console.log(this.years[kay].months[j].days[k].number);
-      }
-    }
-  }
-}
-
-
 
 /**
  * @example
@@ -58,7 +42,6 @@ Year.prototype.create_months = function() {
   return months;
 };
 
-
 /**
  * @example
  * new Month(9, 2013);
@@ -75,7 +58,7 @@ var Month = function(month, year) {
   this.days = this.create_days();
 }
 
-Month.prototype.NAMES = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+Month.prototype.NAMES = ["Декабрь", "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь", "Январь"];
 Month.prototype.NAMES_CASE = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
 
 /**
@@ -111,22 +94,28 @@ Month.prototype.create_days = function() {
       new_day;
    
   for (var i = 0; i < this.days_count(); i++) {
-    new_day = new Day(i);
+    new_day = new Day(i, this.first_day());
     days.push(new_day);
   }
   return days;
 }
 
-
 /**
  * @example
- * new Day(17);
+ * new Day(17, 6);
  *
  * @param {Number} day (например: 17)
+ * @param {Number} first_day день недели первого дня в месяце (цифрами от 0) (например: 6)
  * @constructor
  */
-var Day = function (day) {
+var Day = function (day, first_day) {
   this.number = day;
+  this.week_day = (first_day + day) % 7;
+  if (((first_day + day) % 7) === 5 || ((first_day + day) % 7) === 6){
+    this.output = true;
+  } else {
+    this.output = false;
+  }
 }
 
 
@@ -134,13 +123,10 @@ var Day = function (day) {
  * Запускает отображение календаря
  * @param {Object} month
  */
-Calendar.prototype.display = function (month) {
-   console.log(month);
-/*
-   draw_new_year(this.year.number);
-   draw_new_month(this.years[Operating_Date[0]].months[Operating_Date[1]].number);
-   draw_new_days(this.years[Operating_Date[0]].number, this.years[Operating_Date[0]].months[Operating_Date[1]]);
-*/
+Calendar.prototype.draw = function () {
+   draw_new_year();
+   draw_new_month();
+   draw_new_days();
 };
 
 
@@ -149,18 +135,6 @@ Calendar.prototype.display = function (month) {
  * Получает из конструтора Calendar
  */
 var New_Calender;
-
-/**
- * Глобальная переменная, которая хранит в себе Массив выбранной пользователем даты
- * Например: [2013, 09, 18]
- */
-var Selected_Date;
-
-/**
- * Глобальная переменная, которая хранит в себе временные месяц и год, для отображения в календаре 
- * Например: [2013, 09]
-var Operating_Date;
- */
 
 /**
  * Создает новый календать по дате. Если дата не передана, то добавялет сегодняшний день
@@ -172,74 +146,31 @@ var Operating_Date;
  * Не возвращает данные.
  */
 var start_new_calendar = function(date) {
-   if (date) {
-      var date_in_array = [parseInt(date.substring(6)), parseInt(date.substring(3, 5) - 1), parseInt(date.substring(0, 2))];
-   } else {
-      var date_in_array = [new Date().getFullYear(), new Date().getMonth(), new Date().getDate()];
-   }
-   Selected_Date = date_in_array;
+  if (date) {
+    var date_in_array = [parseInt(date.substring(6)), parseInt(date.substring(3, 5) - 1), parseInt(date.substring(0, 2))];
+  } else {
+    var date_in_array = [new Date().getFullYear(), new Date().getMonth(), new Date().getDate()];
+  }
 
-//   Operating_Date = [date_in_array[0], date_in_array[1]];
+  New_Calender = new Calendar(date_in_array[0]);
 
-   New_Calender = new Calendar(date_in_array[0]);
+  New_Calender.current_date = [date_in_array[0], date_in_array[1], date_in_array[2]];
+  New_Calender.selected_date = [date_in_array[0], date_in_array[1], date_in_array[2]];
 
-   New_Calender.display(Selected_Date[0], Selected_Date[1]);
+  New_Calender.draw();
 }
 
 /**
- * Прибавляет или вычитает 1 год и вызывает функции отображения календаря и даты текстом
- *
- * @example
- * chance_year(-1);
- *
- * @param {Number} count или 1, или -1 (например: -1).
- * Не возвращает данные.
- */
-var change_year = function(count){
-   Operating_Date[0] += count;
-   New_Calender.display();
+ * Это временная функция для проверки объекта
+Calendar.prototype.run = function () {
+  for(var kay in this.years) {
+    console.log(this.years[kay].number);
+    for (var j = 0; j < 12; j++){
+      console.log(this.years[kay].months[j].name + " - " + this.years[kay].months[j].first_day() + " - " + this.years[kay].months[j].days_count());
+      for (var k = 0; k < this.years[kay].months[j].days_count(); k++){
+        console.log(this.years[kay].months[j].days[k].number + " - " + this.years[kay].months[j].days[k].week_day + " - " + this.years[kay].months[j].days[k].output);
+      }
+    }
+  }
 }
-
-/**
- * Прибавляет или вычитает 1 месяц и вызывает функции отображения календаря и даты текстом
- *
- * @example
- * chance_month(-1);
- *
- * @param {Number} count или 1, или -1 (например: -1).
- * Не возвращает данные.
  */
-var change_month = function(count){
-   Operating_Date[1] += count;
-   if (Operating_Date[1] === 12) {
-      Operating_Date[1] = 0;
-      Operating_Date[0]++;
-   }
-   if (Operating_Date[1] === -1) {
-      Operating_Date[1] = 11;
-      Operating_Date[0]--;
-   }
-   New_Calender.display();
-}
-
-/**
- * Получает новое число из даты (без месяца и года), запускает две функции: отображения смены даты и вывода новой даты в поле.
- *
- * @example
- * change_day(3);
- *
- * @param {Number} day число даты, от 1 до 31 (например: 3).
- * Не возвращает значений.
- */
-var change_day = function(day) {
-  day
-  day.month
-  day.month.year
-    
-  selected_day = day
-  redraw()
-  
-   Selected_Date = [Operating_Date[0], Operating_Date[1], day];
-   New_Calender.display();
-   display_full_date_in_area();
-}
