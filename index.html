@@ -6,7 +6,7 @@
 		<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 		<link type="text/css" href="style.css" rel="stylesheet" />
 	</head>
-	<body onload="start_new_calendar();">
+	<body onload="calendar.start_new_calendar();">
 		<h1>Всплывающий календарь</h1>
 
 		Дата: <input id="result">
@@ -28,9 +28,31 @@
 			<div id="close" role="close">Закрыть</div>
 		</div>
 		
-		<!--button onclick="(new Calendar(2013)).run()">Проверить</button-->
+		<script src="calendar.js"></script>
+		<script src="handlers.js"></script>
+		<script type="text/javascript">
+			function Application() {
+			};
+			
+			Application.prototype.run = function() {
+				this.start_new_calendar = function(date) {
+				  if (date) {
+				    var date_in_array = [parseInt(date.substring(6)), parseInt(date.substring(3, 5) - 1), parseInt(date.substring(0, 2))];
+				  } else {
+				    var date_in_array = [new Date().getFullYear(), new Date().getMonth(), new Date().getDate()];
+				  }
 
-		<script src="display.js"></script>
-		<script src="functional.js"></script>
+				  calendar = new Calendar(date_in_array[0]);
+
+				  calendar.current_date = [date_in_array[0], date_in_array[1], date_in_array[2]];
+				  calendar.selected_date = [date_in_array[0], date_in_array[1], date_in_array[2]];
+
+				  calendar.redraw();
+				};
+			};
+			
+			var calendar = new Application();
+			calendar.run();
+		</script>
 	</body>
 </html>
